@@ -1,0 +1,26 @@
+#include <iostream>
+#include <queue>
+#include <vector>
+
+int main() {
+    // 使用lambda表达式来定义比较函数
+    auto comp = [](const std::pair<int, int>& a, const std::pair<int, int>& b) {
+        return a.second > b.second;
+    };
+
+    // 使用比较函数来初始化优先队列
+    std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, decltype(comp)> pq(comp);
+
+    // 向优先队列中添加元素
+    pq.push({1, 5});
+    pq.push({2, 3});
+    pq.push({3, 7});
+
+    // 输出优先队列中的元素
+    while (!pq.empty()) {
+        std::cout << "(" << pq.top().first << ", " << pq.top().second << ")" << std::endl;
+        pq.pop();
+    }
+
+    return 0;
+}
