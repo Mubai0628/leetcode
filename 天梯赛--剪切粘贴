@@ -1,0 +1,48 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <functional>
+using namespace std;
+int main() {
+	string s;
+	getline(cin, s); 
+	//s.replace(2,3,"asd");
+	//cout << s<<endl;
+	int n;
+	
+	cin >> n;
+	for (int i = 0; i < n;i++) {
+		int a, b;
+		bool flag = true;
+		string c, d;
+		cin >> a >> b >> c >> d;
+		int aa = c.size(), bb = d.size();
+		string temp = s.substr(a-1,b-a+1);
+		s.erase(a-1,b-a+1);
+		//cout << temp <<' '<<s << endl;
+		size_t pos = 0;
+		while (1) {
+			if (s.find(c, pos) == string::npos)break;
+			size_t p = s.find(c, pos);
+			string t1 = s.substr(p, aa);
+			string t2 = s.substr(p + aa, bb);
+			//cout << t1 << ' ' << t2 << ' ' << endl;
+			
+			if (t2 != d) {
+				pos = p + 1;
+			}
+			else {
+				s.insert(p+aa,temp);
+				flag = false;
+				//s.replace(p + aa, bb, temp);
+				//cout << s << endl;
+				break;
+			}
+		}
+		if (flag) {
+			s += temp;
+			//cout<<s<<endl;
+		}
+	}
+	cout << s;
+}
