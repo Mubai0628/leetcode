@@ -1,0 +1,86 @@
+#include <iostream>
+#include <vector>
+#include <stack>
+#include <functional>
+#include <deque>
+struct TreeNode {
+      int val;
+      TreeNode *left;
+      TreeNode *right;
+      TreeNode() : val(0), left(nullptr), right(nullptr) {}
+      TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+      TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+};
+
+using namespace std;
+int main() {
+    
+    int N = 0;
+    cin >> N;
+    vector<int>pre;
+    vector<int>ino;
+    for (int i = 0; i < N;i++) {
+        int t = 0;
+        cin >> t;
+        ino.emplace_back(t);
+    }
+    for (int i = 0; i < N; i++) {
+        int t = 0;
+        cin >> t;
+        pre.emplace_back(t);
+    }
+    TreeNode* root = new TreeNode(pre[0]);
+    //root->val = pre[0];
+    //root->left = nullptr;
+    //root->right = nullptr;
+    stack<TreeNode*>cnt;
+    cnt.push(root);
+    int io = 0;
+    for (int i = 1; i < N;i++) {
+        TreeNode *tt = cnt.top();
+        if (tt->val != ino[io]) {
+            tt->left = new TreeNode(pre[i]);
+            cnt.push(tt->left);
+        }
+        else {
+            while (!cnt.empty()&&cnt.top()->val==ino[io]) {
+                tt = cnt.top();
+                cnt.pop();
+                io++;
+            }
+            tt->right = new TreeNode(pre[i]);
+            cnt.push(tt->right);
+        }
+    }
+    /*function<void(TreeNode*)>dfs = [&](TreeNode* root) {
+        if (root->left)dfs(root->left);
+        cout << root->val<<' ';
+        if (root->right)dfs(root->right);
+    };
+    dfs(root);
+    前序测试
+    */
+
+    deque<TreeNode*>dq;
+    vector<int>ans;
+    dq.push_back(root);
+    while (!dq.empty()) {
+        int q = dq.size();
+        for (int i = 0; i < q;i++) {
+            TreeNode* temp = dq.front();
+            dq.pop_front();
+            ans.emplace_back(temp->val);
+            if (temp->right) {
+                dq.push_back(temp->right);
+            }
+            if (temp->left) {
+                dq.push_back(temp->left);
+            }
+        }
+    }
+    for (int i = 0; i < N;i++) {
+        if (i != N - 1)cout << ans[i] << ' ';
+        else cout << ans[i];
+    }
+
+}
